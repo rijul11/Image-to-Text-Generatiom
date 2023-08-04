@@ -8,12 +8,12 @@ from vocabulary import *
 from config import config
 
 class Flickr8kDataset(Dataset):
-    def __init__(self, root_dir, test, transform = None, freq_threshold = 2):
+    def __init__(self, root_dir, annotation_file, test, transform = None, ):
         self.root_dir = root_dir
-        self.df = pd.read_csv(config['caption_file_path'])
+        self.df = pd.read_csv(annotation_file)
         self.transform = transform
         # Get images, caption column from pandas
-        split_factor = 38002 # 4000/ 5 = reserving ~200 images for testing
+        split_factor = 38002
         
         self.imgs = self.df["image"]
         self.imgs_test = self.imgs[split_factor:]
@@ -22,7 +22,7 @@ class Flickr8kDataset(Dataset):
         self.captions_test = self.captions[split_factor:]
         self.captions = self.captions[0:split_factor]
         self.test = test
-        self.vocab = Vocab_Builder(freq_threshold) # freq threshold is experimental
+        self.vocab = Vocab_Builder()
         self.vocab.build_vocabulary(self.captions.tolist())
         
     def __len__(self):
@@ -54,7 +54,11 @@ class Flickr8kDataset(Dataset):
         numericalized_caption.append(self.vocab.stoi["<EOS>"])
     
     def __repr__(self) -> str:
-        return self.vocab.iloc[1000]
+        arr=''
+        for i in range(0,1000):
+            arr += self.imgs.iloc[i]
+        return arr
+    
         
     @staticmethod
     def evaluation(self, index : int):
