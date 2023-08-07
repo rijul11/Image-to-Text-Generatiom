@@ -44,7 +44,10 @@ class Flickr8kDataset(Dataset):
         self.dataset_size = len(self.data) if self._training else 0
     
     def __len__(self):
-        return self._dataset_size
+        return self.dataset_size
+    
+    def __refr__(self):
+        return self.data
     
     def construct_image_transform(self, image_size):
         
