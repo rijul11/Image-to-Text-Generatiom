@@ -20,10 +20,9 @@ if __name__ == "__main__":
 
     image2caption = load_captions(data)
     image2caption = clean_captions(image2caption)
-
+    # print(image2caption)
     # Create and save dataset corpus vocabulary
     vocab = create_vocab(image2caption)
-    # Extract GloVe embeddings for tokens present in the training set vocab
     extract_embeddings(config, vocab)
 
     # Save info regarding the dataset split elements

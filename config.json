@@ -31,7 +31,7 @@
         "image_size": 256
     },
 
-    "vocab_size": 7890,
+    "vocab_size": 8767,
 
     "PAD_token": "<pad>",
     "PAD_idx": 0,
@@ -64,8 +64,8 @@
     },
 
     "train_config": {
-        "num_of_epochs": 100,
-        "warmup_steps": 2811,
+        "num_of_epochs": 6,
+        "warmup_steps": 50,
         "l2_penalty": 0.5,
         "learning_rate": 0.000008,
         "gradient_clipping": 2.0,

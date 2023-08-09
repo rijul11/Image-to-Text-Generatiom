@@ -21,15 +21,13 @@ def preprocess_caption(caption):
 
 
 def save_captions(img_caption, img_batch, save_path):
-    captions=[]
-    for img_name in img_batch:
-        img_id = os.path.splitext(img_name)[0]
-        for img_id in img_caption:
-            for caption in img_caption[img_id]:
-                captions.append("{} {}\n".format(img_name, caption))
-    
-    with open(save_path, 'wb') as f:
-        pickle.dump(captions, f)
+    with open(save_path, 'w') as f:
+        for img_name in img_batch:
+            img_id = os.path.splitext(img_name)[0]
+            #print(img_id)
+            if img_id in img_caption:
+                for caption in img_caption[img_id]:
+                    f.write("{} {}\n".format(img_name, caption))
         
 
 def split_dataset(img_caption, split_paths, save_paths):
@@ -100,6 +98,8 @@ def create_vocab(img_caption):
     starting_len = len(token2idx)
     tokens = list(tokens)
     token2idx.update({token: (idx + starting_len) for idx, token in enumerate(tokens)})
+    
+    print(len(token2idx))
 
     return token2idx
 

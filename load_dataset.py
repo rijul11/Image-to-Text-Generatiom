@@ -41,7 +41,7 @@ class Flickr8kDataset(Dataset):
         # Create (X, Y) pairs
         self.data = self.create_input_label_mappings(self.data)
 
-        self.dataset_size = len(self.data) if self._training else 0
+        self.dataset_size = len(self.data) if self.training else 0
     
     def __len__(self):
         return self.dataset_size
@@ -56,7 +56,7 @@ class Flickr8kDataset(Dataset):
             std=[0.229, 0.224, 0.225]
         )
         preprocessing = transforms.Compose([
-            transforms.Scale(256),
+            transforms.Resize(256),
             transforms.CenterCrop(image_size),
             transforms.ToTensor(),
             normalize,
