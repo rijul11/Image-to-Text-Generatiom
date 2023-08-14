@@ -8,7 +8,7 @@ import torchvision.models as models
 from nltk.translate.bleu_score import corpus_bleu
 
 from load_dataset import Flickr8kDataset
-from model import CaptionDecoder
+from model import CaptionDecoder, Encoder
 from utils.utils import save_checkpoint, log_gradient_norm, set_up_causal_mask, greedy_decoding
 
 
@@ -89,15 +89,9 @@ def train(config, writer, device):
     #######################
     # Set up the encoder 
     #######################
-    # Download pretrained CNN encoder
-    encoder = models.resnet50(pretrained=True)
-    # Extract only the convolutional backbone of the model
-    encoder = torch.nn.Sequential(*(list(encoder.children())[:-2]))
+    # Instantiate the encoder
+    encoder = Encoder()
     encoder = encoder.to(device)
-    # Freeze encoder layers
-    for param in encoder.parameters():
-        param.requires_grad = False
-    encoder.eval()
 
     ######################
     # Set up the decoder
@@ -164,7 +158,7 @@ def train(config, writer, device):
 
             # Calculate the loss
             loss = loss_fcn(y_pred, y.long())
-            
+            print(loss.size())
             # Update model weights
             loss.backward()
             log_gradient_norm(decoder, writer, train_step, "Before")
